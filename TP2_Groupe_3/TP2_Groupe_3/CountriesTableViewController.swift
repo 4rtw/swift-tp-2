@@ -22,25 +22,51 @@ class CountriesTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return countriesByContinent.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return countries.count
+        var i = 0
+        var result = 0
+        for (value) in countriesByContinent.values{
+            if section == i{
+                result = value.count
+                break
+            }
+            i = i+1
+        };
+        
+        return result
     }
     
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //Creating a table cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "CountryCell", for: indexPath)
-                
-        let country = countries[indexPath.row]
+             
+        //Preparing cell data
+        
+        
+        var i = 0
+        var result : [Country] = [Country]()
+        for (value) in countriesByContinent.values{
+            if indexPath.section == i{
+                result = value
+                break
+            }
+            i = i+1
+        };
+        
+        let country = result[indexPath.row]
         cell.textLabel?.text = country.name
         cell.detailTextLabel?.text = country.isoCode
         
+        //Updating image size
         let targetSize = CGSize(width: 33, height: 25)
         let currentImage = UIImage(named: country.isoCode)
         
         cell.imageView?.image = resizedImage(image: currentImage, size:targetSize)
+        
+        //Returning the cell
         return cell
     }
     
@@ -53,7 +79,16 @@ class CountriesTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Section \(section)";
+        var i = 0
+        var result = ""
+        for current in countriesByContinent.keys{
+            if section == i{
+                result = current
+                break
+            }
+            i = i+1
+        };
+        return result
     }
     
 
