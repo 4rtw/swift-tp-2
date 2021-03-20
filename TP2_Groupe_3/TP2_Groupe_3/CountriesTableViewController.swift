@@ -11,7 +11,7 @@ class CountriesTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        tableView.tableFooterView = UIView()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -32,16 +32,29 @@ class CountriesTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CountryCell", for: indexPath)
-        
+                
         let country = countries[indexPath.row]
         cell.textLabel?.text = country.name
-
+        cell.detailTextLabel?.text = country.isoCode
+        
+        let targetSize = CGSize(width: 33, height: 25)
+        let currentImage = UIImage(named: country.isoCode)
+        
+        cell.imageView?.image = resizedImage(image: currentImage, size:targetSize)
         return cell
     }
     
-    /*override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func resizedImage(image: UIImage?, size: CGSize) -> UIImage? {
+        let renderer = UIGraphicsImageRenderer(size: size)
+        return renderer.image { (context) in
+            image?.draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Section \(section)";
-    }*/
+    }
     
 
     /*
